@@ -94,15 +94,43 @@ class Game:
             self.suffer_damage()
         else:
             try:
-                card_index = int(action) - 1
-                card = self.player1.hand.pop(card_index)
-                print(f"You played: {card}")
-                # Step 2 - Activate the suit power
-                self.activate_suit_power(card)
-                # Step 3 - Deal damage to the enemy and check
-                self.deal_damage(card)
-                # Step 4 - Suffer damage from the enemy
-                self.suffer_damage()
+                stripped = list(map(str.strip, action.split(',')))
+                if len(stripped) == 1:
+                    card_index = int(action) - 1
+                    card = self.player1.hand.pop(card_index)
+                    print(f"You played: {card}")
+                    # Step 2 - Activate the suit power
+                    self.activate_suit_power(card)
+                    # Step 3 - Deal damage to the enemy and check
+                    self.deal_damage(card)
+                    # Step 4 - Suffer damage from the enemy
+                    self.suffer_damage()
+                else:
+                    cards_played = []
+                    for c in stripped:
+                        cards_played.append(self.player1.hand[int(c)-1])
+                    if 1 in set(card.rank_value for card in cards_played):
+                        for c in cards_played:
+                            self.activate_suit_power(c)
+                        for c in cards_played:
+                            if c.rank_value==1:
+                                self.deal_damage(c,max(card.rank_value for card in cards_played))
+                            else:
+                                self.deal_damage(c,1)
+                            self.player1.hand.remove(c)
+                        self.suffer_damage()
+                    elif len(set(card.rank_value for card in cards_played)) == 1:
+                        if sum(set(card.rank_value for card in cards_played)) > 10:
+                            print("Combo value too high, must be less than 10.")
+                            self.play_round()
+                        else:
+                            for c in cards_played:
+                                self.activate_suit_power(c)
+                            for c in cards_played:
+                                self.deal_damage(c)
+                                self.player1.hand.remove(c)
+                            self.suffer_damage()
+                            
 
             except (ValueError, IndexError) as e:
                 print("Invalid input. Please enter a card number or 'yield'.")
@@ -157,8 +185,8 @@ class Game:
         # Return the discard pile to the table, faceup.
         print("Returning discard pile to the table.")
 
-    def deal_damage(self, card):
-        damage = card.rank_value
+    def deal_damage(self, card, override=0):
+        damage = card.rank_value + override
         if hasattr(self, 'double_damage') and self.double_damage:
             damage *= 2
             del self.double_damage
@@ -215,13 +243,11 @@ class Game:
             self.discard_pile.append(self.current_enemy)
             self.current_enemy = self.castle_deck.deal_card()
             self.set_health()
-            self.display_enemy()
         if self.current_enemy == 0:
             print("Perfect defeat, adding enemy to tavern.")
             self.player_deck = [self.current_enemy] + self.player_deck
             self.current_enemy = self.castle_deck.deal_card()
             self.set_health()
-            self.display_enemy()
 
     def display_hand(self):
         print("Your hand:")
