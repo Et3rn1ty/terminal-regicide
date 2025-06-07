@@ -9,6 +9,7 @@ This project implements the card game Regicide in a terminal-based environment u
 *   Core game logic implementation
 *   Terminal-based user interface
 *   ASCII cards borrowed from https://github.com/naivoder/ascii_cards/tree/main
+*   Rules: https://www.regicidegame.com/site_files/33132/upload_files/RegicideRulesA4.pdf
 
 ## Files
 
