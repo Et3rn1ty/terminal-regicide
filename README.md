@@ -16,7 +16,6 @@ This project implements the card game Regicide in a terminal-based environment u
 *   `game.py`: Contains the core game logic.
 *   `player.py`: Defines the `Player` class.
 *   `playing_cards.py`: Defines the `PlayingCards` class.
-*   `terminal_ui.py`: Handles the terminal user interface.
 *   `test.py`: Contains tests.
 
 ## Usage
