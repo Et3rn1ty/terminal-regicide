@@ -21,7 +21,7 @@ This project implements the card game Regicide in a terminal-based environment u
 
 ## Usage
 
-1.  Run `terminal_ui.py` to start the game.
+1.  Run `game.py` to start the game.
 2.  Follow the prompts in the terminal to play the game.
 
 ## Dependencies
