@@ -29,5 +29,5 @@ This project implements the card game Regicide in a terminal-based environment u
 
 ## To Do
 
-*   Implement the animal companion rules and logic
-*   Implement the combo rules and logic
+*   Make it nicer? 
+*   Show full rules somehow?
